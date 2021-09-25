@@ -1,6 +1,9 @@
 import React from 'react';
 import { Link, useStaticQuery, graphql } from 'gatsby';
+import {StaticImage} from 'gatsby-plugin-image';
+
 import Layout from '../components/Layout';
+import {imageWrapper} from '../styles/index.module.css';
 
 const IndexPage: React.FC = function IndexPage() {
   const data = useStaticQuery(graphql`
@@ -23,6 +26,15 @@ const IndexPage: React.FC = function IndexPage() {
 
   return (
     <Layout>
+      <div className={imageWrapper}>
+        <StaticImage
+          src={'../images/ivana-la-61jg6zviI7I-unsplash.jpg'}
+          alt={'Dogs images with paper hearts'}
+          placeholder="blurred"
+          width={300}
+          height={300}
+        />
+      </div>
       <h1>Hello World!</h1>
       <Link to="/about">About this site</Link>
 
