@@ -1,32 +1,13 @@
 import React from 'react';
-import { Link, useStaticQuery, graphql } from 'gatsby';
-import SeoComponent from '../components/SeoComponent';
+import { Link } from 'gatsby';
+import Layout from '../components/Layout';
 
 const IndexPage: React.FC = function IndexPage() {
-  const data = useStaticQuery(graphql`
-    query SiteTitle {
-      site {
-        siteMetadata {
-          title
-        }
-      }
-    }
-  `);
-
-  const meta =  data?.site?.siteMetadata ?? {};
-
   return (
-    <>
-      <SeoComponent/>
-      <header>
-        <Link to="/">{meta?.title}</Link>
-      </header>
-      <main>
+    <Layout>
       <h1>Hello World!</h1>
       <Link to="/about">About this site</Link>
-    </main>
-    </>
-
+    </Layout>
   )
 }
 
