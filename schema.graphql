@@ -12,6 +12,15 @@ interface Node {
     parent: Node
 }
 
+"A Sanity document"
+interface SanityDocument {
+    _createdAt: Date
+    _id: String
+    _rev: String
+    _type: String
+    _updatedAt: Date
+}
+
 type Directory implements Node {
     absolutePath: String!
     accessTime(
@@ -570,6 +579,10 @@ type Query {
     allFile(filter: FileFilterInput, limit: Int, skip: Int, sort: FileSortInput): FileConnection!
     allImageSharp(filter: ImageSharpFilterInput, limit: Int, skip: Int, sort: ImageSharpSortInput): ImageSharpConnection!
     allMdx(filter: MdxFilterInput, limit: Int, skip: Int, sort: MdxSortInput): MdxConnection!
+    allSanityEpisode(filter: SanityEpisodeFilterInput, limit: Int, skip: Int, sort: SanityEpisodeSortInput): SanityEpisodeConnection!
+    allSanityFileAsset(filter: SanityFileAssetFilterInput, limit: Int, skip: Int, sort: SanityFileAssetSortInput): SanityFileAssetConnection!
+    allSanityGuest(filter: SanityGuestFilterInput, limit: Int, skip: Int, sort: SanityGuestSortInput): SanityGuestConnection!
+    allSanityImageAsset(filter: SanityImageAssetFilterInput, limit: Int, skip: Int, sort: SanityImageAssetSortInput): SanityImageAssetConnection!
     allSite(filter: SiteFilterInput, limit: Int, skip: Int, sort: SiteSortInput): SiteConnection!
     allSiteBuildMetadata(filter: SiteBuildMetadataFilterInput, limit: Int, skip: Int, sort: SiteBuildMetadataSortInput): SiteBuildMetadataConnection!
     allSiteFunction(filter: SiteFunctionFilterInput, limit: Int, skip: Int, sort: SiteFunctionSortInput): SiteFunctionConnection!
@@ -579,11 +592,518 @@ type Query {
     file(absolutePath: StringQueryOperatorInput, accessTime: DateQueryOperatorInput, atime: DateQueryOperatorInput, atimeMs: FloatQueryOperatorInput, base: StringQueryOperatorInput, birthTime: DateQueryOperatorInput, birthtime: DateQueryOperatorInput, birthtimeMs: FloatQueryOperatorInput, blksize: IntQueryOperatorInput, blocks: IntQueryOperatorInput, changeTime: DateQueryOperatorInput, childImageSharp: ImageSharpFilterInput, childMdx: MdxFilterInput, children: NodeFilterListInput, childrenImageSharp: ImageSharpFilterListInput, childrenMdx: MdxFilterListInput, ctime: DateQueryOperatorInput, ctimeMs: FloatQueryOperatorInput, dev: IntQueryOperatorInput, dir: StringQueryOperatorInput, ext: StringQueryOperatorInput, extension: StringQueryOperatorInput, gid: IntQueryOperatorInput, id: StringQueryOperatorInput, ino: FloatQueryOperatorInput, internal: InternalFilterInput, mode: IntQueryOperatorInput, modifiedTime: DateQueryOperatorInput, mtime: DateQueryOperatorInput, mtimeMs: FloatQueryOperatorInput, name: StringQueryOperatorInput, nlink: IntQueryOperatorInput, parent: NodeFilterInput, prettySize: StringQueryOperatorInput, publicURL: StringQueryOperatorInput, rdev: IntQueryOperatorInput, relativeDirectory: StringQueryOperatorInput, relativePath: StringQueryOperatorInput, root: StringQueryOperatorInput, size: IntQueryOperatorInput, sourceInstanceName: StringQueryOperatorInput, uid: IntQueryOperatorInput): File
     imageSharp(children: NodeFilterListInput, fixed: ImageSharpFixedFilterInput, fluid: ImageSharpFluidFilterInput, gatsbyImageData: JSONQueryOperatorInput, id: StringQueryOperatorInput, internal: InternalFilterInput, original: ImageSharpOriginalFilterInput, parent: NodeFilterInput, resize: ImageSharpResizeFilterInput): ImageSharp
     mdx(body: StringQueryOperatorInput, children: NodeFilterListInput, excerpt: StringQueryOperatorInput, fileAbsolutePath: StringQueryOperatorInput, frontmatter: MdxFrontmatterFilterInput, headings: MdxHeadingMdxFilterListInput, html: StringQueryOperatorInput, id: StringQueryOperatorInput, internal: InternalFilterInput, mdxAST: JSONQueryOperatorInput, parent: NodeFilterInput, rawBody: StringQueryOperatorInput, slug: StringQueryOperatorInput, tableOfContents: JSONQueryOperatorInput, timeToRead: IntQueryOperatorInput, wordCount: MdxWordCountFilterInput): Mdx
+    sanityEpisode(_createdAt: DateQueryOperatorInput, _id: StringQueryOperatorInput, _key: StringQueryOperatorInput, _rawGuest: JSONQueryOperatorInput, _rawHost: JSONQueryOperatorInput, _rawImage: JSONQueryOperatorInput, _rawSlug: JSONQueryOperatorInput, _rawTags: JSONQueryOperatorInput, _rev: StringQueryOperatorInput, _type: StringQueryOperatorInput, _updatedAt: DateQueryOperatorInput, children: NodeFilterListInput, date: DateQueryOperatorInput, demo: StringQueryOperatorInput, description: StringQueryOperatorInput, featured: BooleanQueryOperatorInput, gatsbyPath: StringQueryOperatorInput, guest: SanityGuestFilterListInput, hidden: BooleanQueryOperatorInput, host: SanityGuestFilterInput, id: StringQueryOperatorInput, image: SanityEpisodeImageFilterInput, internal: InternalFilterInput, links: StringQueryOperatorInput, parent: NodeFilterInput, repo: StringQueryOperatorInput, slug: SanitySlugFilterInput, tags: SanityTagFilterListInput, title: StringQueryOperatorInput, transcript: StringQueryOperatorInput, youtubeID: StringQueryOperatorInput): SanityEpisode
+    sanityFileAsset(_createdAt: DateQueryOperatorInput, _id: StringQueryOperatorInput, _key: StringQueryOperatorInput, _rawSource: JSONQueryOperatorInput, _rev: StringQueryOperatorInput, _type: StringQueryOperatorInput, _updatedAt: DateQueryOperatorInput, altText: StringQueryOperatorInput, assetId: StringQueryOperatorInput, children: NodeFilterListInput, description: StringQueryOperatorInput, extension: StringQueryOperatorInput, id: StringQueryOperatorInput, internal: InternalFilterInput, label: StringQueryOperatorInput, mimeType: StringQueryOperatorInput, originalFilename: StringQueryOperatorInput, parent: NodeFilterInput, path: StringQueryOperatorInput, sha1hash: StringQueryOperatorInput, size: FloatQueryOperatorInput, source: SanityAssetSourceDataFilterInput, title: StringQueryOperatorInput, url: StringQueryOperatorInput): SanityFileAsset
+    sanityGuest(_createdAt: DateQueryOperatorInput, _id: StringQueryOperatorInput, _key: StringQueryOperatorInput, _rawGuestImage: JSONQueryOperatorInput, _rev: StringQueryOperatorInput, _type: StringQueryOperatorInput, _updatedAt: DateQueryOperatorInput, children: NodeFilterListInput, guestImage: SanityImageFilterInput, id: StringQueryOperatorInput, internal: InternalFilterInput, name: StringQueryOperatorInput, parent: NodeFilterInput, twitter: StringQueryOperatorInput): SanityGuest
+    sanityImageAsset(_createdAt: DateQueryOperatorInput, _id: StringQueryOperatorInput, _key: StringQueryOperatorInput, _rawMetadata: JSONQueryOperatorInput, _rawSource: JSONQueryOperatorInput, _rev: StringQueryOperatorInput, _type: StringQueryOperatorInput, _updatedAt: DateQueryOperatorInput, altText: StringQueryOperatorInput, assetId: StringQueryOperatorInput, children: NodeFilterListInput, description: StringQueryOperatorInput, extension: StringQueryOperatorInput, gatsbyImageData: JSONQueryOperatorInput, id: StringQueryOperatorInput, internal: InternalFilterInput, label: StringQueryOperatorInput, metadata: SanityImageMetadataFilterInput, mimeType: StringQueryOperatorInput, originalFilename: StringQueryOperatorInput, parent: NodeFilterInput, path: StringQueryOperatorInput, sha1hash: StringQueryOperatorInput, size: FloatQueryOperatorInput, source: SanityAssetSourceDataFilterInput, title: StringQueryOperatorInput, url: StringQueryOperatorInput): SanityImageAsset
     site(buildTime: DateQueryOperatorInput, children: NodeFilterListInput, host: StringQueryOperatorInput, id: StringQueryOperatorInput, internal: InternalFilterInput, parent: NodeFilterInput, pathPrefix: StringQueryOperatorInput, polyfill: BooleanQueryOperatorInput, port: IntQueryOperatorInput, siteMetadata: SiteSiteMetadataFilterInput): Site
     siteBuildMetadata(buildTime: DateQueryOperatorInput, children: NodeFilterListInput, id: StringQueryOperatorInput, internal: InternalFilterInput, parent: NodeFilterInput): SiteBuildMetadata
     siteFunction(absoluteCompiledFilePath: StringQueryOperatorInput, children: NodeFilterListInput, functionRoute: StringQueryOperatorInput, id: StringQueryOperatorInput, internal: InternalFilterInput, matchPath: StringQueryOperatorInput, originalAbsoluteFilePath: StringQueryOperatorInput, originalRelativeFilePath: StringQueryOperatorInput, parent: NodeFilterInput, pluginName: StringQueryOperatorInput, relativeCompiledFilePath: StringQueryOperatorInput): SiteFunction
     sitePage(children: NodeFilterListInput, component: StringQueryOperatorInput, componentChunkName: StringQueryOperatorInput, context: SitePageContextFilterInput, id: StringQueryOperatorInput, internal: InternalFilterInput, internalComponentName: StringQueryOperatorInput, isCreatedByStatefulCreatePages: BooleanQueryOperatorInput, matchPath: StringQueryOperatorInput, parent: NodeFilterInput, path: StringQueryOperatorInput, pluginCreator: SitePluginFilterInput, pluginCreatorId: StringQueryOperatorInput): SitePage
     sitePlugin(browserAPIs: StringQueryOperatorInput, children: NodeFilterListInput, id: StringQueryOperatorInput, internal: InternalFilterInput, name: StringQueryOperatorInput, nodeAPIs: StringQueryOperatorInput, packageJson: SitePluginPackageJsonFilterInput, parent: NodeFilterInput, pluginFilepath: StringQueryOperatorInput, pluginOptions: SitePluginPluginOptionsFilterInput, resolve: StringQueryOperatorInput, ssrAPIs: StringQueryOperatorInput, version: StringQueryOperatorInput): SitePlugin
+}
+
+type SanityAssetSourceData {
+    _key: String
+    _type: String
+    id: String
+    name: String
+    url: String
+}
+
+type SanityBlock {
+    _key: String
+    _rawChildren(resolveReferences: SanityResolveReferencesConfiguration): JSON
+    _type: String
+    children: [SanitySpan]
+    list: String
+    style: String
+}
+
+type SanityEpisode implements Node & SanityDocument {
+    _createdAt(
+        "Returns the difference between this date and the current time. Defaults to \"milliseconds\" but you can also pass in as the measurement \"years\", \"months\", \"weeks\", \"days\", \"hours\", \"minutes\", and \"seconds\"."
+        difference: String,
+        "Format the date using Moment.js' date tokens, e.g. `date(formatString: \"YYYY MMMM DD\")`. See https://momentjs.com/docs/#/displaying/format/ for documentation for different tokens."
+        formatString: String,
+        "Returns a string generated with Moment.js' `fromNow` function"
+        fromNow: Boolean,
+        "Configures the locale Moment.js will use to format the date."
+        locale: String
+    ): Date
+    _id: String
+    _key: String
+    _rawGuest(resolveReferences: SanityResolveReferencesConfiguration): JSON
+    _rawHost(resolveReferences: SanityResolveReferencesConfiguration): JSON
+    _rawImage(resolveReferences: SanityResolveReferencesConfiguration): JSON
+    _rawSlug(resolveReferences: SanityResolveReferencesConfiguration): JSON
+    _rawTags(resolveReferences: SanityResolveReferencesConfiguration): JSON
+    _rev: String
+    _type: String
+    _updatedAt(
+        "Returns the difference between this date and the current time. Defaults to \"milliseconds\" but you can also pass in as the measurement \"years\", \"months\", \"weeks\", \"days\", \"hours\", \"minutes\", and \"seconds\"."
+        difference: String,
+        "Format the date using Moment.js' date tokens, e.g. `date(formatString: \"YYYY MMMM DD\")`. See https://momentjs.com/docs/#/displaying/format/ for documentation for different tokens."
+        formatString: String,
+        "Returns a string generated with Moment.js' `fromNow` function"
+        fromNow: Boolean,
+        "Configures the locale Moment.js will use to format the date."
+        locale: String
+    ): Date
+    children: [Node!]!
+    date(
+        "Returns the difference between this date and the current time. Defaults to \"milliseconds\" but you can also pass in as the measurement \"years\", \"months\", \"weeks\", \"days\", \"hours\", \"minutes\", and \"seconds\"."
+        difference: String,
+        "Format the date using Moment.js' date tokens, e.g. `date(formatString: \"YYYY MMMM DD\")`. See https://momentjs.com/docs/#/displaying/format/ for documentation for different tokens."
+        formatString: String,
+        "Returns a string generated with Moment.js' `fromNow` function"
+        fromNow: Boolean,
+        "Configures the locale Moment.js will use to format the date."
+        locale: String
+    ): Date
+    demo: String
+    description: String
+    featured: Boolean
+    gatsbyPath(filePath: String): String
+    guest: [SanityGuest]
+    hidden: Boolean
+    host: SanityGuest
+    id: ID!
+    image: SanityEpisodeImage
+    internal: Internal!
+    links: [String]
+    parent: Node
+    repo: String
+    slug: SanitySlug
+    tags: [SanityTag]
+    title: String
+    transcript: String
+    youtubeID: String
+}
+
+type SanityEpisodeConnection {
+    distinct(field: SanityEpisodeFieldsEnum!): [String!]!
+    edges: [SanityEpisodeEdge!]!
+    group(field: SanityEpisodeFieldsEnum!, limit: Int, skip: Int): [SanityEpisodeGroupConnection!]!
+    max(field: SanityEpisodeFieldsEnum!): Float
+    min(field: SanityEpisodeFieldsEnum!): Float
+    nodes: [SanityEpisode!]!
+    pageInfo: PageInfo!
+    sum(field: SanityEpisodeFieldsEnum!): Float
+    totalCount: Int!
+}
+
+type SanityEpisodeEdge {
+    next: SanityEpisode
+    node: SanityEpisode!
+    previous: SanityEpisode
+}
+
+type SanityEpisodeGroupConnection {
+    edges: [SanityEpisodeEdge!]!
+    field: String!
+    fieldValue: String
+    nodes: [SanityEpisode!]!
+    pageInfo: PageInfo!
+    totalCount: Int!
+}
+
+type SanityEpisodeImage {
+    _key: String
+    _rawAsset(resolveReferences: SanityResolveReferencesConfiguration): JSON
+    _rawCrop(resolveReferences: SanityResolveReferencesConfiguration): JSON
+    _rawHotspot(resolveReferences: SanityResolveReferencesConfiguration): JSON
+    _type: String
+    alt: String
+    asset: SanityImageAsset
+    crop: SanityImageCrop
+    hotspot: SanityImageHotspot
+}
+
+type SanityFile {
+    _key: String
+    _rawAsset(resolveReferences: SanityResolveReferencesConfiguration): JSON
+    _type: String
+    asset: SanityFileAsset
+}
+
+type SanityFileAsset implements Node & SanityDocument {
+    _createdAt(
+        "Returns the difference between this date and the current time. Defaults to \"milliseconds\" but you can also pass in as the measurement \"years\", \"months\", \"weeks\", \"days\", \"hours\", \"minutes\", and \"seconds\"."
+        difference: String,
+        "Format the date using Moment.js' date tokens, e.g. `date(formatString: \"YYYY MMMM DD\")`. See https://momentjs.com/docs/#/displaying/format/ for documentation for different tokens."
+        formatString: String,
+        "Returns a string generated with Moment.js' `fromNow` function"
+        fromNow: Boolean,
+        "Configures the locale Moment.js will use to format the date."
+        locale: String
+    ): Date
+    _id: String
+    _key: String
+    _rawSource(resolveReferences: SanityResolveReferencesConfiguration): JSON
+    _rev: String
+    _type: String
+    _updatedAt(
+        "Returns the difference between this date and the current time. Defaults to \"milliseconds\" but you can also pass in as the measurement \"years\", \"months\", \"weeks\", \"days\", \"hours\", \"minutes\", and \"seconds\"."
+        difference: String,
+        "Format the date using Moment.js' date tokens, e.g. `date(formatString: \"YYYY MMMM DD\")`. See https://momentjs.com/docs/#/displaying/format/ for documentation for different tokens."
+        formatString: String,
+        "Returns a string generated with Moment.js' `fromNow` function"
+        fromNow: Boolean,
+        "Configures the locale Moment.js will use to format the date."
+        locale: String
+    ): Date
+    altText: String
+    assetId: String
+    children: [Node!]!
+    description: String
+    extension: String
+    id: ID!
+    internal: Internal!
+    label: String
+    mimeType: String
+    originalFilename: String
+    parent: Node
+    path: String
+    sha1hash: String
+    size: Float
+    source: SanityAssetSourceData
+    title: String
+    url: String
+}
+
+type SanityFileAssetConnection {
+    distinct(field: SanityFileAssetFieldsEnum!): [String!]!
+    edges: [SanityFileAssetEdge!]!
+    group(field: SanityFileAssetFieldsEnum!, limit: Int, skip: Int): [SanityFileAssetGroupConnection!]!
+    max(field: SanityFileAssetFieldsEnum!): Float
+    min(field: SanityFileAssetFieldsEnum!): Float
+    nodes: [SanityFileAsset!]!
+    pageInfo: PageInfo!
+    sum(field: SanityFileAssetFieldsEnum!): Float
+    totalCount: Int!
+}
+
+type SanityFileAssetEdge {
+    next: SanityFileAsset
+    node: SanityFileAsset!
+    previous: SanityFileAsset
+}
+
+type SanityFileAssetGroupConnection {
+    edges: [SanityFileAssetEdge!]!
+    field: String!
+    fieldValue: String
+    nodes: [SanityFileAsset!]!
+    pageInfo: PageInfo!
+    totalCount: Int!
+}
+
+type SanityGeopoint {
+    _key: String
+    _type: String
+    alt: Float
+    lat: Float
+    lng: Float
+}
+
+type SanityGuest implements Node & SanityDocument {
+    _createdAt(
+        "Returns the difference between this date and the current time. Defaults to \"milliseconds\" but you can also pass in as the measurement \"years\", \"months\", \"weeks\", \"days\", \"hours\", \"minutes\", and \"seconds\"."
+        difference: String,
+        "Format the date using Moment.js' date tokens, e.g. `date(formatString: \"YYYY MMMM DD\")`. See https://momentjs.com/docs/#/displaying/format/ for documentation for different tokens."
+        formatString: String,
+        "Returns a string generated with Moment.js' `fromNow` function"
+        fromNow: Boolean,
+        "Configures the locale Moment.js will use to format the date."
+        locale: String
+    ): Date
+    _id: String
+    _key: String
+    _rawGuestImage(resolveReferences: SanityResolveReferencesConfiguration): JSON
+    _rev: String
+    _type: String
+    _updatedAt(
+        "Returns the difference between this date and the current time. Defaults to \"milliseconds\" but you can also pass in as the measurement \"years\", \"months\", \"weeks\", \"days\", \"hours\", \"minutes\", and \"seconds\"."
+        difference: String,
+        "Format the date using Moment.js' date tokens, e.g. `date(formatString: \"YYYY MMMM DD\")`. See https://momentjs.com/docs/#/displaying/format/ for documentation for different tokens."
+        formatString: String,
+        "Returns a string generated with Moment.js' `fromNow` function"
+        fromNow: Boolean,
+        "Configures the locale Moment.js will use to format the date."
+        locale: String
+    ): Date
+    children: [Node!]!
+    guestImage: SanityImage
+    id: ID!
+    internal: Internal!
+    name: String
+    parent: Node
+    twitter: String
+}
+
+type SanityGuestConnection {
+    distinct(field: SanityGuestFieldsEnum!): [String!]!
+    edges: [SanityGuestEdge!]!
+    group(field: SanityGuestFieldsEnum!, limit: Int, skip: Int): [SanityGuestGroupConnection!]!
+    max(field: SanityGuestFieldsEnum!): Float
+    min(field: SanityGuestFieldsEnum!): Float
+    nodes: [SanityGuest!]!
+    pageInfo: PageInfo!
+    sum(field: SanityGuestFieldsEnum!): Float
+    totalCount: Int!
+}
+
+type SanityGuestEdge {
+    next: SanityGuest
+    node: SanityGuest!
+    previous: SanityGuest
+}
+
+type SanityGuestGroupConnection {
+    edges: [SanityGuestEdge!]!
+    field: String!
+    fieldValue: String
+    nodes: [SanityGuest!]!
+    pageInfo: PageInfo!
+    totalCount: Int!
+}
+
+type SanityImage {
+    _key: String
+    _rawAsset(resolveReferences: SanityResolveReferencesConfiguration): JSON
+    _rawCrop(resolveReferences: SanityResolveReferencesConfiguration): JSON
+    _rawHotspot(resolveReferences: SanityResolveReferencesConfiguration): JSON
+    _type: String
+    asset: SanityImageAsset
+    crop: SanityImageCrop
+    hotspot: SanityImageHotspot
+}
+
+type SanityImageAsset implements Node & SanityDocument {
+    _createdAt(
+        "Returns the difference between this date and the current time. Defaults to \"milliseconds\" but you can also pass in as the measurement \"years\", \"months\", \"weeks\", \"days\", \"hours\", \"minutes\", and \"seconds\"."
+        difference: String,
+        "Format the date using Moment.js' date tokens, e.g. `date(formatString: \"YYYY MMMM DD\")`. See https://momentjs.com/docs/#/displaying/format/ for documentation for different tokens."
+        formatString: String,
+        "Returns a string generated with Moment.js' `fromNow` function"
+        fromNow: Boolean,
+        "Configures the locale Moment.js will use to format the date."
+        locale: String
+    ): Date
+    _id: String
+    _key: String
+    _rawMetadata(resolveReferences: SanityResolveReferencesConfiguration): JSON
+    _rawSource(resolveReferences: SanityResolveReferencesConfiguration): JSON
+    _rev: String
+    _type: String
+    _updatedAt(
+        "Returns the difference between this date and the current time. Defaults to \"milliseconds\" but you can also pass in as the measurement \"years\", \"months\", \"weeks\", \"days\", \"hours\", \"minutes\", and \"seconds\"."
+        difference: String,
+        "Format the date using Moment.js' date tokens, e.g. `date(formatString: \"YYYY MMMM DD\")`. See https://momentjs.com/docs/#/displaying/format/ for documentation for different tokens."
+        formatString: String,
+        "Returns a string generated with Moment.js' `fromNow` function"
+        fromNow: Boolean,
+        "Configures the locale Moment.js will use to format the date."
+        locale: String
+    ): Date
+    altText: String
+    assetId: String
+    children: [Node!]!
+    description: String
+    extension: String
+    gatsbyImageData(
+        """
+
+        If set along with width or height, this will set the value of the other dimension to match the provided aspect ratio, cropping the image if needed.
+        If neither width or height is provided, height will be set based on the intrinsic width of the source image.
+        """
+        aspectRatio: Float,
+        "Background color applied to the wrapper, or when \"letterboxing\" an image to another aspect ratio."
+        backgroundColor: String,
+        """
+
+        Specifies the image widths to generate. You should rarely need to change this. For FIXED and CONSTRAINED images it is better to allow these to be determined automatically,
+        based on the image size. For FULL_WIDTH images this can be used to override the default, which is [750, 1080, 1366, 1920].
+        It will never generate any images larger than the source.
+        """
+        breakpoints: [Int],
+        fit: SanityImageFit = FILL,
+        """
+
+        The image formats to generate. Valid values are AUTO (meaning the same format as the source image), JPG, PNG, WEBP and AVIF.
+        The default value is [AUTO, WEBP], and you should rarely need to change this. Take care if you specify JPG or PNG when you do
+        not know the formats of the source images, as this could lead to unwanted results such as converting JPEGs to PNGs. Specifying
+        both PNG and JPG is not supported and will be ignored.
+        """
+        formats: [GatsbyImageFormat] = [NO_CHANGE, WEBP],
+        "If set, the height of the generated image. If omitted, it is calculated from the supplied width, matching the aspect ratio of the source image."
+        height: Int,
+        """
+
+        The layout for the image.
+        FIXED: A static image sized, that does not resize according to the screen width
+        FULL_WIDTH: The image resizes to fit its container. Pass a "sizes" option if it isn't going to be the full width of the screen.
+        CONSTRAINED: Resizes to fit its container, up to a maximum width, at which point it will remain fixed in size.
+        """
+        layout: GatsbyImageLayout,
+        """
+
+        A list of image pixel densities to generate for FIXED and CONSTRAINED images. You should rarely need to change this. It will never generate images larger than the source, and will always include a 1x image.
+        Default is [ 1, 2 ] for fixed images, meaning 1x, 2x, 3x, and [0.25, 0.5, 1, 2] for fluid. In this case, an image with a fluid layout and width = 400 would generate images at 100, 200, 400 and 800px wide.
+        """
+        outputPixelDensities: [Float],
+        """
+
+        Format of generated placeholder image, displayed while the main image loads.
+        BLURRED: a blurred, low resolution image, encoded as a base64 data URI (default)
+        DOMINANT_COLOR: a solid color, calculated from the dominant color of the image.
+        NONE: no placeholder.
+        """
+        placeholder: SanityGatsbyImagePlaceholder = DOMINANT_COLOR,
+        """
+
+        The "sizes" property, passed to the img tag. This describes the display size of the image.
+        This does not affect the generated images, but is used by the browser to decide which images to download. You can leave this blank for fixed images, or if the responsive image
+        container will be the full width of the screen. In these cases we will generate an appropriate value.
+        """
+        sizes: String,
+        """
+
+        The display width of the generated image for layout = FIXED, and the display width of the largest image for layout = CONSTRAINED.
+        The actual largest image resolution will be this value multiplied by the largest value in outputPixelDensities
+        Ignored if layout = FLUID.
+        """
+        width: Int
+    ): JSON!
+    id: ID!
+    internal: Internal!
+    label: String
+    metadata: SanityImageMetadata
+    mimeType: String
+    originalFilename: String
+    parent: Node
+    path: String
+    sha1hash: String
+    size: Float
+    source: SanityAssetSourceData
+    title: String
+    url: String
+}
+
+type SanityImageAssetConnection {
+    distinct(field: SanityImageAssetFieldsEnum!): [String!]!
+    edges: [SanityImageAssetEdge!]!
+    group(field: SanityImageAssetFieldsEnum!, limit: Int, skip: Int): [SanityImageAssetGroupConnection!]!
+    max(field: SanityImageAssetFieldsEnum!): Float
+    min(field: SanityImageAssetFieldsEnum!): Float
+    nodes: [SanityImageAsset!]!
+    pageInfo: PageInfo!
+    sum(field: SanityImageAssetFieldsEnum!): Float
+    totalCount: Int!
+}
+
+type SanityImageAssetEdge {
+    next: SanityImageAsset
+    node: SanityImageAsset!
+    previous: SanityImageAsset
+}
+
+type SanityImageAssetGroupConnection {
+    edges: [SanityImageAssetEdge!]!
+    field: String!
+    fieldValue: String
+    nodes: [SanityImageAsset!]!
+    pageInfo: PageInfo!
+    totalCount: Int!
+}
+
+type SanityImageCrop {
+    _key: String
+    _type: String
+    bottom: Float
+    left: Float
+    right: Float
+    top: Float
+}
+
+type SanityImageDimensions {
+    _key: String
+    _type: String
+    aspectRatio: Float
+    height: Float
+    width: Float
+}
+
+type SanityImageHotspot {
+    _key: String
+    _type: String
+    height: Float
+    width: Float
+    x: Float
+    y: Float
+}
+
+type SanityImageMetadata {
+    _key: String
+    _rawDimensions(resolveReferences: SanityResolveReferencesConfiguration): JSON
+    _rawLocation(resolveReferences: SanityResolveReferencesConfiguration): JSON
+    _rawPalette(resolveReferences: SanityResolveReferencesConfiguration): JSON
+    _type: String
+    dimensions: SanityImageDimensions
+    hasAlpha: Boolean
+    isOpaque: Boolean
+    location: SanityGeopoint
+    lqip: String
+    palette: SanityImagePalette
+}
+
+type SanityImagePalette {
+    _key: String
+    _rawDarkMuted(resolveReferences: SanityResolveReferencesConfiguration): JSON
+    _rawDarkVibrant(resolveReferences: SanityResolveReferencesConfiguration): JSON
+    _rawDominant(resolveReferences: SanityResolveReferencesConfiguration): JSON
+    _rawLightMuted(resolveReferences: SanityResolveReferencesConfiguration): JSON
+    _rawLightVibrant(resolveReferences: SanityResolveReferencesConfiguration): JSON
+    _rawMuted(resolveReferences: SanityResolveReferencesConfiguration): JSON
+    _rawVibrant(resolveReferences: SanityResolveReferencesConfiguration): JSON
+    _type: String
+    darkMuted: SanityImagePaletteSwatch
+    darkVibrant: SanityImagePaletteSwatch
+    dominant: SanityImagePaletteSwatch
+    lightMuted: SanityImagePaletteSwatch
+    lightVibrant: SanityImagePaletteSwatch
+    muted: SanityImagePaletteSwatch
+    vibrant: SanityImagePaletteSwatch
+}
+
+type SanityImagePaletteSwatch {
+    _key: String
+    _type: String
+    background: String
+    foreground: String
+    population: Float
+    title: String
+}
+
+type SanitySlug {
+    _key: String
+    _type: String
+    current: String
+}
+
+type SanitySpan {
+    _key: String
+    _type: String
+    marks: [String]
+    text: String
+}
+
+type SanityTag {
+    _key: String
+    _type: String
+    label: String
+    value: String
 }
 
 type Site implements Node {
@@ -749,13 +1269,20 @@ type SitePageConnection {
 }
 
 type SitePageContext {
+    _xparams: SitePageContext_xparams
     frontmatter: SitePageContextFrontmatter
+    id: String
+    slug__current: String
 }
 
 type SitePageContextFrontmatter {
     date: Date
     description: String
     title: String
+}
+
+type SitePageContext_xparams {
+    slug__current: String
 }
 
 type SitePageEdge {
@@ -846,6 +1373,7 @@ type SitePluginPackageJsonPeerDependencies {
 type SitePluginPluginOptions {
     allExtensions: Boolean
     base64Width: Int
+    dataset: String
     defaultLayouts: SitePluginPluginOptionsDefaultLayouts
     defaultQuality: Int
     extensions: [String]
@@ -857,6 +1385,7 @@ type SitePluginPluginOptions {
     name: String
     path: String
     pathCheck: Boolean
+    projectId: String
     root: String
     stripMetadata: Boolean
 }
@@ -1371,6 +1900,21 @@ enum FileFieldsEnum {
     uid
 }
 
+enum GatsbyImageFormat {
+    AUTO
+    AVIF
+    JPG
+    NO_CHANGE
+    PNG
+    WEBP
+}
+
+enum GatsbyImageLayout {
+    CONSTRAINED
+    FIXED
+    FULL_WIDTH
+}
+
 enum HeadingsMdx {
     h1
     h2
@@ -1659,6 +2203,842 @@ enum PotraceTurnPolicy {
     TURNPOLICY_MINORITY
     TURNPOLICY_RIGHT
     TURNPOLICY_WHITE
+}
+
+enum SanityEpisodeFieldsEnum {
+    _createdAt
+    _id
+    _key
+    _rawGuest
+    _rawHost
+    _rawImage
+    _rawSlug
+    _rawTags
+    _rev
+    _type
+    _updatedAt
+    children @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___children @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___children___children @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___children___children___children @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___children___children___id @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___children___id @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___children___internal___content @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___children___internal___contentDigest @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___children___internal___description @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___children___internal___fieldOwners @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___children___internal___ignoreType @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___children___internal___mediaType @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___children___internal___owner @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___children___internal___type @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___children___parent___children @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___children___parent___id @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___id @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___internal___content @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___internal___contentDigest @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___internal___description @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___internal___fieldOwners @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___internal___ignoreType @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___internal___mediaType @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___internal___owner @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___internal___type @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___parent___children @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___parent___children___children @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___parent___children___id @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___parent___id @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___parent___internal___content @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___parent___internal___contentDigest @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___parent___internal___description @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___parent___internal___fieldOwners @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___parent___internal___ignoreType @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___parent___internal___mediaType @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___parent___internal___owner @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___parent___internal___type @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___parent___parent___children @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___parent___parent___id @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    date
+    demo
+    description
+    featured
+    gatsbyPath @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    guest
+    guest____createdAt
+    guest____id
+    guest____key
+    guest____rawGuestImage
+    guest____rev
+    guest____type
+    guest____updatedAt
+    guest___children
+    guest___children___children
+    guest___children___children___children
+    guest___children___children___id
+    guest___children___id
+    guest___children___internal___content
+    guest___children___internal___contentDigest
+    guest___children___internal___description
+    guest___children___internal___fieldOwners
+    guest___children___internal___ignoreType
+    guest___children___internal___mediaType
+    guest___children___internal___owner
+    guest___children___internal___type
+    guest___children___parent___children
+    guest___children___parent___id
+    guest___guestImage____key
+    guest___guestImage____rawAsset
+    guest___guestImage____rawCrop
+    guest___guestImage____rawHotspot
+    guest___guestImage____type
+    guest___guestImage___asset____createdAt
+    guest___guestImage___asset____id
+    guest___guestImage___asset____key
+    guest___guestImage___asset____rawMetadata
+    guest___guestImage___asset____rawSource
+    guest___guestImage___asset____rev
+    guest___guestImage___asset____type
+    guest___guestImage___asset____updatedAt
+    guest___guestImage___asset___altText
+    guest___guestImage___asset___assetId
+    guest___guestImage___asset___children @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    guest___guestImage___asset___description
+    guest___guestImage___asset___extension
+    guest___guestImage___asset___gatsbyImageData @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    guest___guestImage___asset___id @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    guest___guestImage___asset___label
+    guest___guestImage___asset___mimeType
+    guest___guestImage___asset___originalFilename
+    guest___guestImage___asset___path
+    guest___guestImage___asset___sha1hash
+    guest___guestImage___asset___size
+    guest___guestImage___asset___title
+    guest___guestImage___asset___url
+    guest___guestImage___crop____key
+    guest___guestImage___crop____type
+    guest___guestImage___crop___bottom
+    guest___guestImage___crop___left
+    guest___guestImage___crop___right
+    guest___guestImage___crop___top
+    guest___guestImage___hotspot____key
+    guest___guestImage___hotspot____type
+    guest___guestImage___hotspot___height
+    guest___guestImage___hotspot___width
+    guest___guestImage___hotspot___x
+    guest___guestImage___hotspot___y
+    guest___id
+    guest___internal___content
+    guest___internal___contentDigest
+    guest___internal___description
+    guest___internal___fieldOwners
+    guest___internal___ignoreType
+    guest___internal___mediaType
+    guest___internal___owner
+    guest___internal___type
+    guest___name
+    guest___parent___children
+    guest___parent___children___children
+    guest___parent___children___id
+    guest___parent___id
+    guest___parent___internal___content
+    guest___parent___internal___contentDigest
+    guest___parent___internal___description
+    guest___parent___internal___fieldOwners
+    guest___parent___internal___ignoreType
+    guest___parent___internal___mediaType
+    guest___parent___internal___owner
+    guest___parent___internal___type
+    guest___parent___parent___children
+    guest___parent___parent___id
+    guest___twitter
+    hidden
+    host____createdAt
+    host____id
+    host____key
+    host____rawGuestImage
+    host____rev
+    host____type
+    host____updatedAt
+    host___children
+    host___children___children
+    host___children___children___children
+    host___children___children___id
+    host___children___id
+    host___children___internal___content
+    host___children___internal___contentDigest
+    host___children___internal___description
+    host___children___internal___fieldOwners
+    host___children___internal___ignoreType
+    host___children___internal___mediaType
+    host___children___internal___owner
+    host___children___internal___type
+    host___children___parent___children
+    host___children___parent___id
+    host___guestImage____key
+    host___guestImage____rawAsset
+    host___guestImage____rawCrop
+    host___guestImage____rawHotspot
+    host___guestImage____type
+    host___guestImage___asset____createdAt
+    host___guestImage___asset____id
+    host___guestImage___asset____key
+    host___guestImage___asset____rawMetadata
+    host___guestImage___asset____rawSource
+    host___guestImage___asset____rev
+    host___guestImage___asset____type
+    host___guestImage___asset____updatedAt
+    host___guestImage___asset___altText
+    host___guestImage___asset___assetId
+    host___guestImage___asset___children @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    host___guestImage___asset___description
+    host___guestImage___asset___extension
+    host___guestImage___asset___gatsbyImageData @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    host___guestImage___asset___id @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    host___guestImage___asset___label
+    host___guestImage___asset___mimeType
+    host___guestImage___asset___originalFilename
+    host___guestImage___asset___path
+    host___guestImage___asset___sha1hash
+    host___guestImage___asset___size
+    host___guestImage___asset___title
+    host___guestImage___asset___url
+    host___guestImage___crop____key
+    host___guestImage___crop____type
+    host___guestImage___crop___bottom
+    host___guestImage___crop___left
+    host___guestImage___crop___right
+    host___guestImage___crop___top
+    host___guestImage___hotspot____key
+    host___guestImage___hotspot____type
+    host___guestImage___hotspot___height
+    host___guestImage___hotspot___width
+    host___guestImage___hotspot___x
+    host___guestImage___hotspot___y
+    host___id
+    host___internal___content
+    host___internal___contentDigest
+    host___internal___description
+    host___internal___fieldOwners
+    host___internal___ignoreType
+    host___internal___mediaType
+    host___internal___owner
+    host___internal___type
+    host___name
+    host___parent___children
+    host___parent___children___children
+    host___parent___children___id
+    host___parent___id
+    host___parent___internal___content
+    host___parent___internal___contentDigest
+    host___parent___internal___description
+    host___parent___internal___fieldOwners
+    host___parent___internal___ignoreType
+    host___parent___internal___mediaType
+    host___parent___internal___owner
+    host___parent___internal___type
+    host___parent___parent___children
+    host___parent___parent___id
+    host___twitter
+    id @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    image____key
+    image____rawAsset
+    image____rawCrop
+    image____rawHotspot
+    image____type
+    image___alt
+    image___asset____createdAt
+    image___asset____id
+    image___asset____key
+    image___asset____rawMetadata
+    image___asset____rawSource
+    image___asset____rev
+    image___asset____type
+    image___asset____updatedAt
+    image___asset___altText
+    image___asset___assetId
+    image___asset___children @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    image___asset___children___children @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    image___asset___children___id @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    image___asset___description
+    image___asset___extension
+    image___asset___gatsbyImageData @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    image___asset___id @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    image___asset___internal___content @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    image___asset___internal___contentDigest @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    image___asset___internal___description @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    image___asset___internal___fieldOwners @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    image___asset___internal___ignoreType @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    image___asset___internal___mediaType @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    image___asset___internal___owner @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    image___asset___internal___type @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    image___asset___label
+    image___asset___metadata____key
+    image___asset___metadata____rawDimensions
+    image___asset___metadata____rawLocation
+    image___asset___metadata____rawPalette
+    image___asset___metadata____type
+    image___asset___metadata___hasAlpha
+    image___asset___metadata___isOpaque
+    image___asset___metadata___lqip
+    image___asset___mimeType
+    image___asset___originalFilename
+    image___asset___parent___children @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    image___asset___parent___id @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    image___asset___path
+    image___asset___sha1hash
+    image___asset___size
+    image___asset___source____key
+    image___asset___source____type
+    image___asset___source___id
+    image___asset___source___name
+    image___asset___source___url
+    image___asset___title
+    image___asset___url
+    image___crop____key
+    image___crop____type
+    image___crop___bottom
+    image___crop___left
+    image___crop___right
+    image___crop___top
+    image___hotspot____key
+    image___hotspot____type
+    image___hotspot___height
+    image___hotspot___width
+    image___hotspot___x
+    image___hotspot___y
+    internal___content @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    internal___contentDigest @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    internal___description @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    internal___fieldOwners @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    internal___ignoreType @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    internal___mediaType @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    internal___owner @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    internal___type @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    links
+    parent___children @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___children___children @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___children___children___children @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___children___children___id @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___children___id @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___children___internal___content @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___children___internal___contentDigest @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___children___internal___description @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___children___internal___fieldOwners @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___children___internal___ignoreType @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___children___internal___mediaType @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___children___internal___owner @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___children___internal___type @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___children___parent___children @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___children___parent___id @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___id @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___internal___content @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___internal___contentDigest @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___internal___description @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___internal___fieldOwners @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___internal___ignoreType @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___internal___mediaType @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___internal___owner @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___internal___type @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___parent___children @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___parent___children___children @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___parent___children___id @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___parent___id @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___parent___internal___content @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___parent___internal___contentDigest @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___parent___internal___description @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___parent___internal___fieldOwners @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___parent___internal___ignoreType @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___parent___internal___mediaType @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___parent___internal___owner @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___parent___internal___type @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___parent___parent___children @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___parent___parent___id @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    repo
+    slug____key
+    slug____type
+    slug___current
+    tags
+    tags____key
+    tags____type
+    tags___label
+    tags___value
+    title
+    transcript
+    youtubeID
+}
+
+enum SanityFileAssetFieldsEnum {
+    _createdAt
+    _id
+    _key
+    _rawSource
+    _rev
+    _type
+    _updatedAt
+    altText
+    assetId
+    children
+    children___children
+    children___children___children
+    children___children___children___children
+    children___children___children___id
+    children___children___id
+    children___children___internal___content
+    children___children___internal___contentDigest
+    children___children___internal___description
+    children___children___internal___fieldOwners
+    children___children___internal___ignoreType
+    children___children___internal___mediaType
+    children___children___internal___owner
+    children___children___internal___type
+    children___children___parent___children
+    children___children___parent___id
+    children___id
+    children___internal___content
+    children___internal___contentDigest
+    children___internal___description
+    children___internal___fieldOwners
+    children___internal___ignoreType
+    children___internal___mediaType
+    children___internal___owner
+    children___internal___type
+    children___parent___children
+    children___parent___children___children
+    children___parent___children___id
+    children___parent___id
+    children___parent___internal___content
+    children___parent___internal___contentDigest
+    children___parent___internal___description
+    children___parent___internal___fieldOwners
+    children___parent___internal___ignoreType
+    children___parent___internal___mediaType
+    children___parent___internal___owner
+    children___parent___internal___type
+    children___parent___parent___children
+    children___parent___parent___id
+    description
+    extension
+    id
+    internal___content
+    internal___contentDigest
+    internal___description
+    internal___fieldOwners
+    internal___ignoreType
+    internal___mediaType
+    internal___owner
+    internal___type
+    label
+    mimeType
+    originalFilename
+    parent___children
+    parent___children___children
+    parent___children___children___children
+    parent___children___children___id
+    parent___children___id
+    parent___children___internal___content
+    parent___children___internal___contentDigest
+    parent___children___internal___description
+    parent___children___internal___fieldOwners
+    parent___children___internal___ignoreType
+    parent___children___internal___mediaType
+    parent___children___internal___owner
+    parent___children___internal___type
+    parent___children___parent___children
+    parent___children___parent___id
+    parent___id
+    parent___internal___content
+    parent___internal___contentDigest
+    parent___internal___description
+    parent___internal___fieldOwners
+    parent___internal___ignoreType
+    parent___internal___mediaType
+    parent___internal___owner
+    parent___internal___type
+    parent___parent___children
+    parent___parent___children___children
+    parent___parent___children___id
+    parent___parent___id
+    parent___parent___internal___content
+    parent___parent___internal___contentDigest
+    parent___parent___internal___description
+    parent___parent___internal___fieldOwners
+    parent___parent___internal___ignoreType
+    parent___parent___internal___mediaType
+    parent___parent___internal___owner
+    parent___parent___internal___type
+    parent___parent___parent___children
+    parent___parent___parent___id
+    path
+    sha1hash
+    size
+    source____key
+    source____type
+    source___id
+    source___name
+    source___url
+    title
+    url
+}
+
+enum SanityGatsbyImagePlaceholder {
+    BLURRED
+    DOMINANT_COLOR
+    NONE
+}
+
+enum SanityGuestFieldsEnum {
+    _createdAt
+    _id
+    _key
+    _rawGuestImage
+    _rev
+    _type
+    _updatedAt
+    children
+    children___children
+    children___children___children
+    children___children___children___children
+    children___children___children___id
+    children___children___id
+    children___children___internal___content
+    children___children___internal___contentDigest
+    children___children___internal___description
+    children___children___internal___fieldOwners
+    children___children___internal___ignoreType
+    children___children___internal___mediaType
+    children___children___internal___owner
+    children___children___internal___type
+    children___children___parent___children
+    children___children___parent___id
+    children___id
+    children___internal___content
+    children___internal___contentDigest
+    children___internal___description
+    children___internal___fieldOwners
+    children___internal___ignoreType
+    children___internal___mediaType
+    children___internal___owner
+    children___internal___type
+    children___parent___children
+    children___parent___children___children
+    children___parent___children___id
+    children___parent___id
+    children___parent___internal___content
+    children___parent___internal___contentDigest
+    children___parent___internal___description
+    children___parent___internal___fieldOwners
+    children___parent___internal___ignoreType
+    children___parent___internal___mediaType
+    children___parent___internal___owner
+    children___parent___internal___type
+    children___parent___parent___children
+    children___parent___parent___id
+    guestImage____key
+    guestImage____rawAsset
+    guestImage____rawCrop
+    guestImage____rawHotspot
+    guestImage____type
+    guestImage___asset____createdAt
+    guestImage___asset____id
+    guestImage___asset____key
+    guestImage___asset____rawMetadata
+    guestImage___asset____rawSource
+    guestImage___asset____rev
+    guestImage___asset____type
+    guestImage___asset____updatedAt
+    guestImage___asset___altText
+    guestImage___asset___assetId
+    guestImage___asset___children @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    guestImage___asset___children___children @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    guestImage___asset___children___id @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    guestImage___asset___description
+    guestImage___asset___extension
+    guestImage___asset___gatsbyImageData @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    guestImage___asset___id @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    guestImage___asset___internal___content @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    guestImage___asset___internal___contentDigest @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    guestImage___asset___internal___description @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    guestImage___asset___internal___fieldOwners @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    guestImage___asset___internal___ignoreType @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    guestImage___asset___internal___mediaType @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    guestImage___asset___internal___owner @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    guestImage___asset___internal___type @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    guestImage___asset___label
+    guestImage___asset___metadata____key
+    guestImage___asset___metadata____rawDimensions
+    guestImage___asset___metadata____rawLocation
+    guestImage___asset___metadata____rawPalette
+    guestImage___asset___metadata____type
+    guestImage___asset___metadata___hasAlpha
+    guestImage___asset___metadata___isOpaque
+    guestImage___asset___metadata___lqip
+    guestImage___asset___mimeType
+    guestImage___asset___originalFilename
+    guestImage___asset___parent___children @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    guestImage___asset___parent___id @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    guestImage___asset___path
+    guestImage___asset___sha1hash
+    guestImage___asset___size
+    guestImage___asset___source____key
+    guestImage___asset___source____type
+    guestImage___asset___source___id
+    guestImage___asset___source___name
+    guestImage___asset___source___url
+    guestImage___asset___title
+    guestImage___asset___url
+    guestImage___crop____key
+    guestImage___crop____type
+    guestImage___crop___bottom
+    guestImage___crop___left
+    guestImage___crop___right
+    guestImage___crop___top
+    guestImage___hotspot____key
+    guestImage___hotspot____type
+    guestImage___hotspot___height
+    guestImage___hotspot___width
+    guestImage___hotspot___x
+    guestImage___hotspot___y
+    id
+    internal___content
+    internal___contentDigest
+    internal___description
+    internal___fieldOwners
+    internal___ignoreType
+    internal___mediaType
+    internal___owner
+    internal___type
+    name
+    parent___children
+    parent___children___children
+    parent___children___children___children
+    parent___children___children___id
+    parent___children___id
+    parent___children___internal___content
+    parent___children___internal___contentDigest
+    parent___children___internal___description
+    parent___children___internal___fieldOwners
+    parent___children___internal___ignoreType
+    parent___children___internal___mediaType
+    parent___children___internal___owner
+    parent___children___internal___type
+    parent___children___parent___children
+    parent___children___parent___id
+    parent___id
+    parent___internal___content
+    parent___internal___contentDigest
+    parent___internal___description
+    parent___internal___fieldOwners
+    parent___internal___ignoreType
+    parent___internal___mediaType
+    parent___internal___owner
+    parent___internal___type
+    parent___parent___children
+    parent___parent___children___children
+    parent___parent___children___id
+    parent___parent___id
+    parent___parent___internal___content
+    parent___parent___internal___contentDigest
+    parent___parent___internal___description
+    parent___parent___internal___fieldOwners
+    parent___parent___internal___ignoreType
+    parent___parent___internal___mediaType
+    parent___parent___internal___owner
+    parent___parent___internal___type
+    parent___parent___parent___children
+    parent___parent___parent___id
+    twitter
+}
+
+enum SanityImageAssetFieldsEnum {
+    _createdAt
+    _id
+    _key
+    _rawMetadata
+    _rawSource
+    _rev
+    _type
+    _updatedAt
+    altText
+    assetId
+    children @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___children @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___children___children @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___children___children___children @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___children___children___id @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___children___id @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___children___internal___content @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___children___internal___contentDigest @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___children___internal___description @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___children___internal___fieldOwners @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___children___internal___ignoreType @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___children___internal___mediaType @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___children___internal___owner @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___children___internal___type @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___children___parent___children @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___children___parent___id @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___id @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___internal___content @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___internal___contentDigest @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___internal___description @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___internal___fieldOwners @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___internal___ignoreType @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___internal___mediaType @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___internal___owner @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___internal___type @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___parent___children @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___parent___children___children @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___parent___children___id @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___parent___id @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___parent___internal___content @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___parent___internal___contentDigest @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___parent___internal___description @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___parent___internal___fieldOwners @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___parent___internal___ignoreType @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___parent___internal___mediaType @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___parent___internal___owner @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___parent___internal___type @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___parent___parent___children @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    children___parent___parent___id @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    description
+    extension
+    gatsbyImageData @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    id @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    internal___content @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    internal___contentDigest @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    internal___description @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    internal___fieldOwners @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    internal___ignoreType @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    internal___mediaType @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    internal___owner @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    internal___type @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    label
+    metadata____key
+    metadata____rawDimensions
+    metadata____rawLocation
+    metadata____rawPalette
+    metadata____type
+    metadata___dimensions____key
+    metadata___dimensions____type
+    metadata___dimensions___aspectRatio
+    metadata___dimensions___height
+    metadata___dimensions___width
+    metadata___hasAlpha
+    metadata___isOpaque
+    metadata___location____key
+    metadata___location____type
+    metadata___location___alt
+    metadata___location___lat
+    metadata___location___lng
+    metadata___lqip
+    metadata___palette____key
+    metadata___palette____rawDarkMuted
+    metadata___palette____rawDarkVibrant
+    metadata___palette____rawDominant
+    metadata___palette____rawLightMuted
+    metadata___palette____rawLightVibrant
+    metadata___palette____rawMuted
+    metadata___palette____rawVibrant
+    metadata___palette____type
+    metadata___palette___darkMuted____key
+    metadata___palette___darkMuted____type
+    metadata___palette___darkMuted___background
+    metadata___palette___darkMuted___foreground
+    metadata___palette___darkMuted___population
+    metadata___palette___darkMuted___title
+    metadata___palette___darkVibrant____key
+    metadata___palette___darkVibrant____type
+    metadata___palette___darkVibrant___background
+    metadata___palette___darkVibrant___foreground
+    metadata___palette___darkVibrant___population
+    metadata___palette___darkVibrant___title
+    metadata___palette___dominant____key
+    metadata___palette___dominant____type
+    metadata___palette___dominant___background
+    metadata___palette___dominant___foreground
+    metadata___palette___dominant___population
+    metadata___palette___dominant___title
+    metadata___palette___lightMuted____key
+    metadata___palette___lightMuted____type
+    metadata___palette___lightMuted___background
+    metadata___palette___lightMuted___foreground
+    metadata___palette___lightMuted___population
+    metadata___palette___lightMuted___title
+    metadata___palette___lightVibrant____key
+    metadata___palette___lightVibrant____type
+    metadata___palette___lightVibrant___background
+    metadata___palette___lightVibrant___foreground
+    metadata___palette___lightVibrant___population
+    metadata___palette___lightVibrant___title
+    metadata___palette___muted____key
+    metadata___palette___muted____type
+    metadata___palette___muted___background
+    metadata___palette___muted___foreground
+    metadata___palette___muted___population
+    metadata___palette___muted___title
+    metadata___palette___vibrant____key
+    metadata___palette___vibrant____type
+    metadata___palette___vibrant___background
+    metadata___palette___vibrant___foreground
+    metadata___palette___vibrant___population
+    metadata___palette___vibrant___title
+    mimeType
+    originalFilename
+    parent___children @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___children___children @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___children___children___children @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___children___children___id @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___children___id @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___children___internal___content @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___children___internal___contentDigest @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___children___internal___description @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___children___internal___fieldOwners @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___children___internal___ignoreType @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___children___internal___mediaType @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___children___internal___owner @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___children___internal___type @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___children___parent___children @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___children___parent___id @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___id @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___internal___content @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___internal___contentDigest @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___internal___description @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___internal___fieldOwners @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___internal___ignoreType @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___internal___mediaType @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___internal___owner @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___internal___type @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___parent___children @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___parent___children___children @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___parent___children___id @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___parent___id @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___parent___internal___content @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___parent___internal___contentDigest @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___parent___internal___description @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___parent___internal___fieldOwners @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___parent___internal___ignoreType @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___parent___internal___mediaType @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___parent___internal___owner @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___parent___internal___type @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___parent___parent___children @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    parent___parent___parent___id @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+    path
+    sha1hash
+    size
+    source____key
+    source____type
+    source___id
+    source___name
+    source___url
+    title
+    url
+}
+
+enum SanityImageFit {
+    CLIP
+    CROP
+    FILL
+    FILLMAX
+    MAX
+    MIN
+    SCALE
 }
 
 enum SiteBuildMetadataFieldsEnum {
@@ -1987,9 +3367,12 @@ enum SitePageFieldsEnum {
     children___parent___parent___id
     component
     componentChunkName
+    context____xparams___slug__current
     context___frontmatter___date
     context___frontmatter___description
     context___frontmatter___title
+    context___id
+    context___slug__current
     id
     internalComponentName
     internal___content
@@ -2101,6 +3484,7 @@ enum SitePageFieldsEnum {
     pluginCreator___pluginFilepath
     pluginCreator___pluginOptions___allExtensions
     pluginCreator___pluginOptions___base64Width
+    pluginCreator___pluginOptions___dataset
     pluginCreator___pluginOptions___defaultLayouts___posts
     pluginCreator___pluginOptions___defaultQuality
     pluginCreator___pluginOptions___extensions
@@ -2112,6 +3496,7 @@ enum SitePageFieldsEnum {
     pluginCreator___pluginOptions___name
     pluginCreator___pluginOptions___path
     pluginCreator___pluginOptions___pathCheck
+    pluginCreator___pluginOptions___projectId
     pluginCreator___pluginOptions___root
     pluginCreator___pluginOptions___stripMetadata
     pluginCreator___resolve
@@ -2227,6 +3612,7 @@ enum SitePluginFieldsEnum {
     pluginFilepath
     pluginOptions___allExtensions
     pluginOptions___base64Width
+    pluginOptions___dataset
     pluginOptions___defaultLayouts___posts
     pluginOptions___defaultQuality
     pluginOptions___extensions
@@ -2238,6 +3624,7 @@ enum SitePluginFieldsEnum {
     pluginOptions___name
     pluginOptions___path
     pluginOptions___pathCheck
+    pluginOptions___projectId
     pluginOptions___root
     pluginOptions___stripMetadata
     resolve
@@ -2570,6 +3957,267 @@ input Potrace {
     turnPolicy: PotraceTurnPolicy
 }
 
+input SanityAssetSourceDataFilterInput {
+    _key: StringQueryOperatorInput
+    _type: StringQueryOperatorInput
+    id: StringQueryOperatorInput
+    name: StringQueryOperatorInput
+    url: StringQueryOperatorInput
+}
+
+input SanityEpisodeFilterInput {
+    _createdAt: DateQueryOperatorInput
+    _id: StringQueryOperatorInput
+    _key: StringQueryOperatorInput
+    _rawGuest: JSONQueryOperatorInput
+    _rawHost: JSONQueryOperatorInput
+    _rawImage: JSONQueryOperatorInput
+    _rawSlug: JSONQueryOperatorInput
+    _rawTags: JSONQueryOperatorInput
+    _rev: StringQueryOperatorInput
+    _type: StringQueryOperatorInput
+    _updatedAt: DateQueryOperatorInput
+    children: NodeFilterListInput
+    date: DateQueryOperatorInput
+    demo: StringQueryOperatorInput
+    description: StringQueryOperatorInput
+    featured: BooleanQueryOperatorInput
+    gatsbyPath: StringQueryOperatorInput
+    guest: SanityGuestFilterListInput
+    hidden: BooleanQueryOperatorInput
+    host: SanityGuestFilterInput
+    id: StringQueryOperatorInput
+    image: SanityEpisodeImageFilterInput
+    internal: InternalFilterInput
+    links: StringQueryOperatorInput
+    parent: NodeFilterInput
+    repo: StringQueryOperatorInput
+    slug: SanitySlugFilterInput
+    tags: SanityTagFilterListInput
+    title: StringQueryOperatorInput
+    transcript: StringQueryOperatorInput
+    youtubeID: StringQueryOperatorInput
+}
+
+input SanityEpisodeImageFilterInput {
+    _key: StringQueryOperatorInput
+    _rawAsset: JSONQueryOperatorInput
+    _rawCrop: JSONQueryOperatorInput
+    _rawHotspot: JSONQueryOperatorInput
+    _type: StringQueryOperatorInput
+    alt: StringQueryOperatorInput
+    asset: SanityImageAssetFilterInput
+    crop: SanityImageCropFilterInput
+    hotspot: SanityImageHotspotFilterInput
+}
+
+input SanityEpisodeSortInput {
+    fields: [SanityEpisodeFieldsEnum]
+    order: [SortOrderEnum] = [ASC]
+}
+
+input SanityFileAssetFilterInput {
+    _createdAt: DateQueryOperatorInput
+    _id: StringQueryOperatorInput
+    _key: StringQueryOperatorInput
+    _rawSource: JSONQueryOperatorInput
+    _rev: StringQueryOperatorInput
+    _type: StringQueryOperatorInput
+    _updatedAt: DateQueryOperatorInput
+    altText: StringQueryOperatorInput
+    assetId: StringQueryOperatorInput
+    children: NodeFilterListInput
+    description: StringQueryOperatorInput
+    extension: StringQueryOperatorInput
+    id: StringQueryOperatorInput
+    internal: InternalFilterInput
+    label: StringQueryOperatorInput
+    mimeType: StringQueryOperatorInput
+    originalFilename: StringQueryOperatorInput
+    parent: NodeFilterInput
+    path: StringQueryOperatorInput
+    sha1hash: StringQueryOperatorInput
+    size: FloatQueryOperatorInput
+    source: SanityAssetSourceDataFilterInput
+    title: StringQueryOperatorInput
+    url: StringQueryOperatorInput
+}
+
+input SanityFileAssetSortInput {
+    fields: [SanityFileAssetFieldsEnum]
+    order: [SortOrderEnum] = [ASC]
+}
+
+input SanityGeopointFilterInput {
+    _key: StringQueryOperatorInput
+    _type: StringQueryOperatorInput
+    alt: FloatQueryOperatorInput
+    lat: FloatQueryOperatorInput
+    lng: FloatQueryOperatorInput
+}
+
+input SanityGuestFilterInput {
+    _createdAt: DateQueryOperatorInput
+    _id: StringQueryOperatorInput
+    _key: StringQueryOperatorInput
+    _rawGuestImage: JSONQueryOperatorInput
+    _rev: StringQueryOperatorInput
+    _type: StringQueryOperatorInput
+    _updatedAt: DateQueryOperatorInput
+    children: NodeFilterListInput
+    guestImage: SanityImageFilterInput
+    id: StringQueryOperatorInput
+    internal: InternalFilterInput
+    name: StringQueryOperatorInput
+    parent: NodeFilterInput
+    twitter: StringQueryOperatorInput
+}
+
+input SanityGuestFilterListInput {
+    elemMatch: SanityGuestFilterInput
+}
+
+input SanityGuestSortInput {
+    fields: [SanityGuestFieldsEnum]
+    order: [SortOrderEnum] = [ASC]
+}
+
+input SanityImageAssetFilterInput {
+    _createdAt: DateQueryOperatorInput
+    _id: StringQueryOperatorInput
+    _key: StringQueryOperatorInput
+    _rawMetadata: JSONQueryOperatorInput
+    _rawSource: JSONQueryOperatorInput
+    _rev: StringQueryOperatorInput
+    _type: StringQueryOperatorInput
+    _updatedAt: DateQueryOperatorInput
+    altText: StringQueryOperatorInput
+    assetId: StringQueryOperatorInput
+    children: NodeFilterListInput
+    description: StringQueryOperatorInput
+    extension: StringQueryOperatorInput
+    gatsbyImageData: JSONQueryOperatorInput
+    id: StringQueryOperatorInput
+    internal: InternalFilterInput
+    label: StringQueryOperatorInput
+    metadata: SanityImageMetadataFilterInput
+    mimeType: StringQueryOperatorInput
+    originalFilename: StringQueryOperatorInput
+    parent: NodeFilterInput
+    path: StringQueryOperatorInput
+    sha1hash: StringQueryOperatorInput
+    size: FloatQueryOperatorInput
+    source: SanityAssetSourceDataFilterInput
+    title: StringQueryOperatorInput
+    url: StringQueryOperatorInput
+}
+
+input SanityImageAssetSortInput {
+    fields: [SanityImageAssetFieldsEnum]
+    order: [SortOrderEnum] = [ASC]
+}
+
+input SanityImageCropFilterInput {
+    _key: StringQueryOperatorInput
+    _type: StringQueryOperatorInput
+    bottom: FloatQueryOperatorInput
+    left: FloatQueryOperatorInput
+    right: FloatQueryOperatorInput
+    top: FloatQueryOperatorInput
+}
+
+input SanityImageDimensionsFilterInput {
+    _key: StringQueryOperatorInput
+    _type: StringQueryOperatorInput
+    aspectRatio: FloatQueryOperatorInput
+    height: FloatQueryOperatorInput
+    width: FloatQueryOperatorInput
+}
+
+input SanityImageFilterInput {
+    _key: StringQueryOperatorInput
+    _rawAsset: JSONQueryOperatorInput
+    _rawCrop: JSONQueryOperatorInput
+    _rawHotspot: JSONQueryOperatorInput
+    _type: StringQueryOperatorInput
+    asset: SanityImageAssetFilterInput
+    crop: SanityImageCropFilterInput
+    hotspot: SanityImageHotspotFilterInput
+}
+
+input SanityImageHotspotFilterInput {
+    _key: StringQueryOperatorInput
+    _type: StringQueryOperatorInput
+    height: FloatQueryOperatorInput
+    width: FloatQueryOperatorInput
+    x: FloatQueryOperatorInput
+    y: FloatQueryOperatorInput
+}
+
+input SanityImageMetadataFilterInput {
+    _key: StringQueryOperatorInput
+    _rawDimensions: JSONQueryOperatorInput
+    _rawLocation: JSONQueryOperatorInput
+    _rawPalette: JSONQueryOperatorInput
+    _type: StringQueryOperatorInput
+    dimensions: SanityImageDimensionsFilterInput
+    hasAlpha: BooleanQueryOperatorInput
+    isOpaque: BooleanQueryOperatorInput
+    location: SanityGeopointFilterInput
+    lqip: StringQueryOperatorInput
+    palette: SanityImagePaletteFilterInput
+}
+
+input SanityImagePaletteFilterInput {
+    _key: StringQueryOperatorInput
+    _rawDarkMuted: JSONQueryOperatorInput
+    _rawDarkVibrant: JSONQueryOperatorInput
+    _rawDominant: JSONQueryOperatorInput
+    _rawLightMuted: JSONQueryOperatorInput
+    _rawLightVibrant: JSONQueryOperatorInput
+    _rawMuted: JSONQueryOperatorInput
+    _rawVibrant: JSONQueryOperatorInput
+    _type: StringQueryOperatorInput
+    darkMuted: SanityImagePaletteSwatchFilterInput
+    darkVibrant: SanityImagePaletteSwatchFilterInput
+    dominant: SanityImagePaletteSwatchFilterInput
+    lightMuted: SanityImagePaletteSwatchFilterInput
+    lightVibrant: SanityImagePaletteSwatchFilterInput
+    muted: SanityImagePaletteSwatchFilterInput
+    vibrant: SanityImagePaletteSwatchFilterInput
+}
+
+input SanityImagePaletteSwatchFilterInput {
+    _key: StringQueryOperatorInput
+    _type: StringQueryOperatorInput
+    background: StringQueryOperatorInput
+    foreground: StringQueryOperatorInput
+    population: FloatQueryOperatorInput
+    title: StringQueryOperatorInput
+}
+
+input SanityResolveReferencesConfiguration {
+    "Max depth to resolve references to"
+    maxDepth: Int!
+}
+
+input SanitySlugFilterInput {
+    _key: StringQueryOperatorInput
+    _type: StringQueryOperatorInput
+    current: StringQueryOperatorInput
+}
+
+input SanityTagFilterInput {
+    _key: StringQueryOperatorInput
+    _type: StringQueryOperatorInput
+    label: StringQueryOperatorInput
+    value: StringQueryOperatorInput
+}
+
+input SanityTagFilterListInput {
+    elemMatch: SanityTagFilterInput
+}
+
 input SiteBuildMetadataFilterInput {
     buildTime: DateQueryOperatorInput
     children: NodeFilterListInput
@@ -2616,13 +4264,20 @@ input SiteFunctionSortInput {
 }
 
 input SitePageContextFilterInput {
+    _xparams: SitePageContext_xparamsFilterInput
     frontmatter: SitePageContextFrontmatterFilterInput
+    id: StringQueryOperatorInput
+    slug__current: StringQueryOperatorInput
 }
 
 input SitePageContextFrontmatterFilterInput {
     date: DateQueryOperatorInput
     description: StringQueryOperatorInput
     title: StringQueryOperatorInput
+}
+
+input SitePageContext_xparamsFilterInput {
+    slug__current: StringQueryOperatorInput
 }
 
 input SitePageFilterInput {
@@ -2708,6 +4363,7 @@ input SitePluginPluginOptionsDefaultLayoutsFilterInput {
 input SitePluginPluginOptionsFilterInput {
     allExtensions: BooleanQueryOperatorInput
     base64Width: IntQueryOperatorInput
+    dataset: StringQueryOperatorInput
     defaultLayouts: SitePluginPluginOptionsDefaultLayoutsFilterInput
     defaultQuality: IntQueryOperatorInput
     extensions: StringQueryOperatorInput
@@ -2719,6 +4375,7 @@ input SitePluginPluginOptionsFilterInput {
     name: StringQueryOperatorInput
     path: StringQueryOperatorInput
     pathCheck: BooleanQueryOperatorInput
+    projectId: StringQueryOperatorInput
     root: StringQueryOperatorInput
     stripMetadata: BooleanQueryOperatorInput
 }
